@@ -58,6 +58,7 @@ ToDo: Move Timesheets CSS to seperate file
   height: 300px;
   background: #f7f7f7;
   border-radius: 1rem;
+  padding: 2rem 3rem;
 }
 
 .button__cta {
@@ -66,8 +67,9 @@ ToDo: Move Timesheets CSS to seperate file
   outline: 0;
   border: none;
   cursor: pointer;
-  padding: 0 1rem;
-  margin: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
+  margin-top: 1rem;
   border-radius: 30px;
   min-width: 100px;
   height: 30px;

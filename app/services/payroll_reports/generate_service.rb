@@ -18,17 +18,17 @@ module PayrollReports
       month_end_date = Date.new(year, month, -1)
       timesheet_logs = TimesheetLog.where(date: (month_start_date..month_end_date))
       employee_job_group_logs = timesheet_logs.group_by do |log|
-        [log.employee_id, log.job_group_id, log.date.day <= 15 ? '1st_half' : '2nd_half']
+        [log.employee_id, log.job_group_id, log.date.day <= 15 ? 'pre_15' : 'post_15']
       end
 
       # Calculate amount paid based on hours worked and job group rates
       employee_job_group_logs.each do |(employee_id, job_group_id, pay_period), logs|
         total_hours = logs.sum(&:hours_worked)
         employee = Employee.find(employee_id)
-        job_group = JobGroup.find(job_group_id)
+        job_group = JobGroup.find(job_group_id) # TO DO: Find at once and find using array?
         amount_paid = (total_hours * job_group.pay).to_f.round(2)
-        start_date = pay_period == '1st_half' ? month_start_date : month_start_date + 15.days
-        end_date = pay_period == '1st_half' ? month_start_date + 14.days : month_end_date
+        start_date = pay_period == 'pre_15' ? month_start_date : month_start_date + 15.days
+        end_date = pay_period == 'pre_15' ? month_start_date + 14.days : month_end_date
 
         payroll_data << {
           employeeId: employee.public_id.to_s,

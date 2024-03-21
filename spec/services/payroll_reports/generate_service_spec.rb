@@ -16,12 +16,12 @@ describe PayrollReports::GenerateService do
         create(:timesheet_log, hours_worked: 4, employee: employee_one, job_group: job_group_two, timesheet:, date: Date.today.end_of_month)
         etwo_time_log = create(:timesheet_log, hours_worked: 3, employee: employee_two, job_group: job_group_one, timesheet:, date: Date.today.end_of_month)
 
-        payroll_result = described_class.new.generate
+        payroll_result = described_class.new(Time.now.month, Time.now.year).generate
         employee_results = payroll_result[:payrollReport][:employeeReports]
    
-        expect(employee_results.first[:employeeId]).to eq(employee_one.public_id)
+        expect(employee_results.first[:employeeId]).to eq(employee_one.public_id.to_s)
         expect(employee_results.first[:amountPaid]).to eq(format_money(eo_time_log.hours_worked * job_group_one.pay))
-        expect(employee_results.last[:employeeId]).to eq(employee_two.public_id)
+        expect(employee_results.last[:employeeId]).to eq(employee_two.public_id.to_s)
         expect(employee_results.last[:amountPaid]).to eq(format_money(etwo_time_log.hours_worked * job_group_one.pay))
       end
     end

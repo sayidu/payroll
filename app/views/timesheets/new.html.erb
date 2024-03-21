@@ -1,2 +1,16 @@
-<h1>Timesheets#new</h1>
-<p>Find me in app/views/timesheets/new.html.erb</p>
+<div class="timesheets__content">
+  <div class="timesheets__header">
+    <h1> Timesheet Uploads </h1>
+  </div>
+
+  <div class="timesheets__form">
+    <%= form_with(model: @timesheet, url: timesheets_path) do |form| %>
+      <div>
+        <%= form.label :timesheet_filename %>
+        <%= form.file_field :filename, required: true %>
+      </div>
+
+      <%= form.submit "Submit", class: "button__cta" %>
+    <% end %>
+  </div>
+</div>

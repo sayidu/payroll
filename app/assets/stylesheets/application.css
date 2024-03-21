@@ -13,3 +13,53 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background: #f9f4f1;
+  color: #001b66;
+}
+
+.alert {
+  text-align: center;
+}
+
+/* 
+ToDo: Move Timesheets CSS to seperate file
+*/
+.timesheets__content {
+  height:100%;
+  width:100%;
+  margin:0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.timesheets__header {
+  text-align: center;
+}
+
+.timesheets__form {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  background: #f7f7f7;
+  border-radius: 1rem;
+}
+
+.button__cta {
+  background-color: #c997db;
+  display: inline-block;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  padding: 0 1rem;
+  margin: 1rem;
+  border-radius: 30px;
+  min-width: 100px;
+  height: 30px;
+  font-size: 1rem;
+  font-weight: 500;
+}

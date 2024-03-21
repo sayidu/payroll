@@ -4,24 +4,26 @@ require 'csv'
 
 module Timesheets
   class ImportService
-    def initialize(log_file)
-      @log_file = log_file
+    def initialize(timesheet_file)
+      @timesheet = Timesheet.new
+      @timesheet_file = timesheet_file
     end
 
     def call
-      tempfile = log_file.tempfile
-      timesheet = Timesheet.create(filename: File.basename(tempfile.path, '.*'))
-      timesheet.with_lock do
+      tempfile = timesheet_file.tempfile
+      timesheet.transaction do
+        timesheet.filename = timesheet_file.original_filename
+        timesheet.save!
         process_file(timesheet, tempfile)
-        result(success: true)
-      rescue StandardError # TO DO: Resuce precise errors
-        result(success: false)
+        result(success: true, object: timesheet)
+      rescue StandardError => e # TO DO: Rescue precise errors
+        result(success: false, errors: e)
       end
     end
 
     private
 
-    attr_reader :log_file
+    attr_reader :timesheet, :timesheet_file
 
     def process_file(timesheet, tempfile)
       ::CSV.parse(File.read(tempfile), headers: true).map do |row|
@@ -36,8 +38,8 @@ module Timesheets
       end
     end
 
-    def result(success: true, message: '')
-      OpenStruct.new(message:, success:)
+    def result(success: true, object: nil, errors: '')
+      OpenStruct.new(success:, object:, errors:)
     end
 
     def format(value)
